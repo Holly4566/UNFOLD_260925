@@ -27,7 +27,7 @@ export function loadState(storage: Pick<Storage, 'getItem'> = localStorage): App
     const raw = storage.getItem(STORAGE_KEY)
     if (!raw) return createInitialState()
     const parsed: unknown = JSON.parse(raw)
-    if (isValidState(parsed)) return parsed
+    if (isValidState(parsed)) return { ...parsed, onboarding: { firstIslandCreated: parsed.onboarding.firstIslandCreated, introCompleted: parsed.onboarding.introCompleted ?? false } }
     if (parsed && typeof parsed === 'object' && (parsed as { schemaVersion?: number }).schemaVersion === 1 && Array.isArray((parsed as LegacyState).islands)) {
       return migrateLegacyState(parsed as LegacyState)
     }

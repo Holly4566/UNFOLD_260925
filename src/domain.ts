@@ -35,7 +35,7 @@ export function createInitialState(): AppState {
     })),
     currentMysteryEvent: null,
     completedEventHistory: [],
-    onboarding: { firstIslandCreated: false },
+    onboarding: { firstIslandCreated: false, introCompleted: false },
   }
 }
 

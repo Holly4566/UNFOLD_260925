@@ -55,5 +55,5 @@ export interface AppState {
   eventPool: PoolEvent[]
   currentMysteryEvent: MysteryEvent | null
   completedEventHistory: CompletedEvent[]
-  onboarding: { firstIslandCreated: boolean }
+  onboarding: { firstIslandCreated: boolean; introCompleted: boolean }
 }

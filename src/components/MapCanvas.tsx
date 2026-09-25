@@ -146,7 +146,7 @@ export function MapCanvas(props: Props) {
           <span><Anchor size={13} /> 我在这里</span>
         </button>
 
-        {!props.islands.length && <div className="map-whisper"><Compass size={19} /><span>海面还很安静<br />去建造属于你的第一座岛</span></div>}
+        {!props.islands.length && <div className="map-whisper"><Compass size={19} /><span>海面还很空荡<br />去建造属于你的第一座岛</span></div>}
       </div>
     </div>
   )

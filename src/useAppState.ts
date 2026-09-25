@@ -23,9 +23,11 @@ export function useAppState() {
     resetViewport: () => update((s) => ({ ...s, viewport: createDefaultViewport() })),
     addIsland: (position: Point) => {
       const island = createIsland(position)
-      update((s) => ({ ...s, islands: [...s.islands, island], onboarding: { firstIslandCreated: true } }))
+      update((s) => ({ ...s, islands: [...s.islands, island], onboarding: { ...s.onboarding, firstIslandCreated: true } }))
       return island.id
     },
+    addIslandData: (island: Island) => update((s) => ({ ...s, islands: [...s.islands, island], onboarding: { ...s.onboarding, firstIslandCreated: true } })),
+    completeIntro: () => update((s) => ({ ...s, onboarding: { ...s.onboarding, introCompleted: true } })),
     updateIsland: (id: string, patch: Partial<Island>) => update((s) => ({
       ...s,
       islands: s.islands.map((island) => island.id === id
