@@ -21,6 +21,7 @@ interface Props {
 
 export function MapCanvas(props: Props) {
   const frameRef = useRef<HTMLDivElement>(null)
+  const suppressObjectClick = useRef(false)
   const pointers = useRef(new Map<number, Point>())
   const gesture = useRef<{ viewport: Viewport; point: Point; distance?: number; center?: Point } | null>(null)
 
@@ -76,12 +77,20 @@ export function MapCanvas(props: Props) {
     event.stopPropagation()
     const start = { x: event.clientX, y: event.clientY }
     const target = event.currentTarget as HTMLElement
+    let moved = false
     target.setPointerCapture(event.pointerId)
-    const handleMove = (next: PointerEvent) => move({
-      x: Math.min(WORLD.width, Math.max(0, position.x + (next.clientX - start.x) / props.viewport.scale)),
-      y: Math.min(WORLD.height, Math.max(0, position.y + (next.clientY - start.y) / props.viewport.scale)),
-    })
+    const handleMove = (next: PointerEvent) => {
+      if (Math.hypot(next.clientX - start.x, next.clientY - start.y) > 4) moved = true
+      move({
+        x: Math.min(WORLD.width, Math.max(0, position.x + (next.clientX - start.x) / props.viewport.scale)),
+        y: Math.min(WORLD.height, Math.max(0, position.y + (next.clientY - start.y) / props.viewport.scale)),
+      })
+    }
     const handleUp = () => {
+      if (moved) {
+        suppressObjectClick.current = true
+        window.setTimeout(() => { suppressObjectClick.current = false }, 0)
+      }
       target.removeEventListener('pointermove', handleMove)
       target.removeEventListener('pointerup', handleUp)
       target.removeEventListener('pointercancel', handleUp)
@@ -111,7 +120,7 @@ export function MapCanvas(props: Props) {
             key={island.id}
             className={`island island--${island.status} ${props.selectedId === island.id ? 'island--selected' : ''}`}
             style={{ left: island.position.x, top: island.position.y, width: sizePixels[island.size] }}
-            onClick={() => props.onSelectIsland(island.id)}
+            onClick={() => { if (!suppressObjectClick.current) props.onSelectIsland(island.id) }}
             onPointerDown={(event) => movablePointerDown(event, island.position, (position) => props.onMoveIsland(island.id, position))}
           >
             <img src="/assets/island.png" alt="" draggable={false} />

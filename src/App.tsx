@@ -1,5 +1,5 @@
 import { Archive, LocateFixed, Map, Pencil, Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArchiveDrawer } from './components/ArchiveDrawer'
 import { EditorDrawer } from './components/EditorDrawer'
 import { MapCanvas } from './components/MapCanvas'
@@ -17,6 +17,31 @@ export default function App() {
   const selected = state.islands.find((island) => island.id === selectedId && !island.archived)
   const archived = state.islands.filter((island) => island.archived)
 
+  useEffect(() => {
+    const handleBack = () => {
+      setSelectedId(null)
+      setNewIslandId(null)
+    }
+    window.addEventListener('popstate', handleBack)
+    return () => window.removeEventListener('popstate', handleBack)
+  }, [])
+
+  function openEditor(id: string, isNew: boolean) {
+    setEditMode(true)
+    setSelectedId(id)
+    setNewIslandId(isNew ? id : null)
+    if (!window.history.state?.islandEditor) window.history.pushState({ islandEditor: true }, '')
+  }
+
+  function closeEditor() {
+    if (window.history.state?.islandEditor) {
+      window.history.back()
+      return
+    }
+    setSelectedId(null)
+    setNewIslandId(null)
+  }
+
   function addIsland() {
     const screenCenter = { x: innerWidth / 2, y: innerHeight / 2 }
     const position = {
@@ -24,9 +49,7 @@ export default function App() {
       y: Math.min(WORLD.height - 100, Math.max(100, (screenCenter.y - state.viewport.y) / state.viewport.scale)),
     }
     const id = actions.addIsland(position)
-    setEditMode(true)
-    setSelectedId(id)
-    setNewIslandId(id)
+    openEditor(id, true)
   }
 
   function removeIsland(id: string, permanent = false) {
@@ -34,7 +57,9 @@ export default function App() {
       actions.deleteIsland(id)
       if (selectedId === id) setSelectedId(null)
       if (newIslandId === id) setNewIslandId(null)
+      return true
     }
+    return false
   }
 
   return <main className="app-shell">
@@ -45,7 +70,7 @@ export default function App() {
       editMode={editMode}
       selectedId={selectedId}
       onViewportChange={actions.setViewport}
-      onSelectIsland={(id) => { setSelectedId(id); setNewIslandId(null); if (!editMode) setEditMode(true) }}
+      onSelectIsland={(id) => openEditor(id, false)}
       onOpenMystery={() => setMysteryOpen(true)}
       onMoveIsland={(id, position) => actions.updateIsland(id, { position })}
       onMoveBoat={actions.setBoatPosition}
@@ -56,7 +81,7 @@ export default function App() {
     {!state.onboarding.firstIslandCreated && <button className="first-island" onClick={addIsland}><span><Plus /></span><div><b>新建第一座岛</b><small>把此刻重要的事放到海上</small></div></button>}
     {state.onboarding.firstIslandCreated && editMode && <button className="floating-add" onClick={addIsland}><Plus />新建岛屿</button>}
 
-    {selected && editMode && <EditorDrawer island={selected} isNew={newIslandId === selected.id} onChange={(patch) => actions.updateIsland(selected.id, patch)} onClose={() => { setSelectedId(null); setNewIslandId(null) }} onArchive={() => { actions.updateIsland(selected.id, { archived: true }); setSelectedId(null); setNewIslandId(null) }} onDelete={() => removeIsland(selected.id)} />}
+    {selected && editMode && <EditorDrawer island={selected} isNew={newIslandId === selected.id} onChange={(patch) => actions.updateIsland(selected.id, patch)} onClose={closeEditor} onArchive={() => { actions.updateIsland(selected.id, { archived: true }); closeEditor() }} onDelete={() => { if (removeIsland(selected.id)) closeEditor() }} />}
     {archiveOpen && <ArchiveDrawer islands={archived} onRestore={(id) => actions.updateIsland(id, { archived: false })} onDelete={(id) => removeIsland(id, true)} onClose={() => setArchiveOpen(false)} />}
     {mysteryOpen && <MysterySheet current={state.currentMysteryEvent} history={state.completedEventHistory} pool={state.eventPool} onClose={() => setMysteryOpen(false)} onAccept={actions.acceptMysteryEvent} onComplete={actions.completeMysteryEvent} onAbandon={actions.abandonMysteryEvent} onAddPool={actions.addPoolEvent} onUpdatePool={actions.updatePoolEvent} onDeletePool={actions.deletePoolEvent} />}
   </main>
