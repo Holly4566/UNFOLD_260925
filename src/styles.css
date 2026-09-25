@@ -58,9 +58,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .brand, .top-actions { display: flex; align-items: center; gap: 8px; pointer-events: auto; }
 .brand { gap: 10px; color: #f9f6ec; text-shadow: 0 2px 15px rgba(12, 40, 44, .35); }
 .brand-mark { width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(12, 40, 44, .3)); }
-.brand b, .brand small { display: block; }
-.brand b { font: 600 17px/1.1 'Songti SC', 'SimSun', serif; letter-spacing: .08em; }
-.brand small { margin-top: 4px; opacity: .72; font-size: 10px; letter-spacing: .15em; }
+.brand b { display: block; font: 600 22px/1.1 'Songti SC', 'SimSun', serif; letter-spacing: .08em; }
 .icon-button { display: inline-grid; width: 40px; height: 40px; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; }
 .icon-button svg { width: 18px; }
 .glass { color: #f8f5ec; background: rgba(29, 55, 55, .42); border: 1px solid rgba(255, 255, 255, .16); backdrop-filter: blur(12px); }
@@ -165,7 +163,6 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 
 @media (max-width: 700px) {
   .topbar { left: 12px; right: 12px; }
-  .brand small { display: none; }
   .top-actions { gap: 5px; }
   .mode-toggle { width: 40px; padding: 0; font-size: 0; }
   .sheet { left: 0; right: 0; bottom: 0; width: 100%; max-height: min(78vh, 680px); border-radius: 24px 24px 0 0; padding-bottom: max(21px, calc(env(safe-area-inset-bottom) + 14px)); }
