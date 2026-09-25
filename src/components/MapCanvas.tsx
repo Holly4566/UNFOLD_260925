@@ -103,14 +103,14 @@ export function MapCanvas(props: Props) {
   const activeIslands = props.islands.filter((island) => !island.archived && island.status === 'active')
 
   return (
-    <div ref={frameRef} className="map-frame" style={{ backgroundImage: `url(${asset('ocean.png')})` }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={endPointer} onPointerCancel={endPointer} onWheel={onWheel}>
-      <div className="world" style={{ width: WORLD.width, height: WORLD.height, transform: `translate(${props.viewport.x}px, ${props.viewport.y}px) scale(${props.viewport.scale})`, backgroundImage: `url(${asset('ocean.png')})` }}>
+    <div ref={frameRef} className="map-frame" style={{ backgroundImage: `url(${asset('ocean.webp')})` }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={endPointer} onPointerCancel={endPointer} onWheel={onWheel}>
+      <div className="world" style={{ width: WORLD.width, height: WORLD.height, transform: `translate(${props.viewport.x}px, ${props.viewport.y}px) scale(${props.viewport.scale})`, backgroundImage: `url(${asset('ocean.webp')})` }}>
         <svg className="routes" viewBox={`0 0 ${WORLD.width} ${WORLD.height}`} aria-hidden="true">
           {activeIslands.map((island) => <path key={island.id} d={`M ${props.boatPosition.x} ${props.boatPosition.y} Q ${(props.boatPosition.x + island.position.x) / 2} ${(props.boatPosition.y + island.position.y) / 2 + 85} ${island.position.x} ${island.position.y}`} />)}
         </svg>
 
         <button data-map-object className="mystery-island" style={{ left: MYSTERY_POSITION.x, top: MYSTERY_POSITION.y }} onClick={props.onOpenMystery} aria-label="打开神秘岛">
-          <img src={asset('mystery-island.png')} alt="雾中的神秘岛" draggable={false} />
+          <img src={asset('mystery-island.webp')} alt="雾中的神秘岛" draggable={false} />
           <span><Sparkles size={14} /> 神秘岛</span>
         </button>
 
@@ -125,7 +125,7 @@ export function MapCanvas(props: Props) {
             onClick={() => { if (!suppressObjectClick.current) props.onSelectIsland(island.id) }}
             onPointerDown={(event) => movablePointerDown(event, island.position, (position) => props.onMoveIsland(island.id, position))}
           >
-            <img src={asset('island.png')} alt="" draggable={false} />
+            <img src={asset('island.webp')} alt="" draggable={false} />
             <span className="island-card">
               <b>{island.name}</b>
               <small>{statusLabel[island.status]} · {island.type === 'main' ? '主线' : '支线'}</small>
@@ -142,7 +142,7 @@ export function MapCanvas(props: Props) {
           onPointerDown={(event) => movablePointerDown(event, props.boatPosition, props.onMoveBoat)}
           aria-label={props.editMode ? '拖动我的船' : '我的船'}
         >
-          <img src={asset('boat.png')} alt="我的船" draggable={false} />
+          <img src={asset('boat.webp')} alt="我的船" draggable={false} />
           <span><Anchor size={13} /> 我在这里</span>
         </button>
 
