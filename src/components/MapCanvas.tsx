@@ -63,7 +63,6 @@ export function MapCanvas(props: Props) {
   }
 
   function onWheel(event: React.WheelEvent) {
-    event.preventDefault()
     const rect = frameRef.current!.getBoundingClientRect()
     const cursor = { x: event.clientX - rect.left, y: event.clientY - rect.top }
     const nextScale = Math.min(1.8, Math.max(0.5, props.viewport.scale * (event.deltaY > 0 ? 0.9 : 1.1)))

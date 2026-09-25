@@ -19,7 +19,7 @@ button { color: inherit; }
 button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid #db8d73; outline-offset: 2px; }
 
 .app-shell { position: relative; width: 100%; height: 100%; overflow: hidden; background: #285b66; }
-.map-frame { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; }
+.map-frame { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; user-select: none; background: url('/assets/ocean.png') center/cover no-repeat; }
 .map-frame:active { cursor: grabbing; }
 .map-frame::after { content: ''; pointer-events: none; position: absolute; inset: 0; box-shadow: inset 0 0 100px rgba(12, 42, 47, .28); }
 .world { position: absolute; transform-origin: 0 0; background: url('/assets/ocean.png') center/cover no-repeat; will-change: transform; }
@@ -57,6 +57,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .topbar { position: fixed; z-index: 20; top: max(14px, env(safe-area-inset-top)); left: 14px; right: 14px; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
 .brand, .top-actions { display: flex; align-items: center; gap: 8px; pointer-events: auto; }
 .brand { gap: 10px; color: #f9f6ec; text-shadow: 0 2px 15px rgba(12, 40, 44, .35); }
+.brand-mark { width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(12, 40, 44, .3)); }
 .brand b, .brand small { display: block; }
 .brand b { font: 600 17px/1.1 'Songti SC', 'SimSun', serif; letter-spacing: .08em; }
 .brand small { margin-top: 4px; opacity: .72; font-size: 10px; letter-spacing: .15em; }

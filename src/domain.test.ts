@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createInitialState, createIsland, drawCandidate, isValidState } from './domain'
+import { WORLD, clampViewport, createInitialState, createIsland, drawCandidate, isValidState } from './domain'
 
 describe('island domain', () => {
   it('creates an empty life map and a complete island model', () => {
@@ -9,6 +9,15 @@ describe('island domain', () => {
     expect(createIsland({ x: 10, y: 20 })).toMatchObject({
       name: '未命名岛屿', status: 'active', size: 'medium', stageNotes: [], position: { x: 10, y: 20 }, archived: false,
     })
+  })
+
+  it('keeps the world covering every edge of a desktop viewport', () => {
+    const screen = { width: 1536, height: 1024 }
+    const viewport = clampViewport({ x: 300, y: 200, scale: 0.5 }, screen)
+    expect(viewport.x).toBeLessThanOrEqual(0)
+    expect(viewport.y).toBeLessThanOrEqual(0)
+    expect(WORLD.width * viewport.scale + viewport.x).toBeGreaterThanOrEqual(screen.width)
+    expect(WORLD.height * viewport.scale + viewport.y).toBeGreaterThanOrEqual(screen.height)
   })
 })
 

@@ -65,12 +65,12 @@ export function clampViewport(
   viewport: AppState['viewport'],
   screen: { width: number; height: number },
 ): AppState['viewport'] {
-  const scale = Math.min(1.8, Math.max(0.5, viewport.scale))
-  const margin = Math.min(screen.width, screen.height) * 0.22
-  const minX = screen.width - WORLD.width * scale - margin
-  const maxX = margin
-  const minY = screen.height - WORLD.height * scale - margin
-  const maxY = margin
+  const coverScale = Math.max(screen.width / WORLD.width, screen.height / WORLD.height)
+  const scale = Math.min(1.8, Math.max(0.5, coverScale, viewport.scale))
+  const minX = screen.width - WORLD.width * scale
+  const maxX = 0
+  const minY = screen.height - WORLD.height * scale
+  const maxY = 0
   return {
     x: Math.min(maxX, Math.max(minX, viewport.x)),
     y: Math.min(maxY, Math.max(minY, viewport.y)),
