@@ -1,6 +1,7 @@
 import { ArrowLeft, Check, History, Pencil, Plus, RotateCcw, Settings2, Trash2, Waves, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { drawCandidate } from '../domain'
+import { asset } from '../assets'
 import type { CompletedEvent, MysteryEvent, PoolEvent } from '../types'
 
 type Page = 'home' | 'draw' | 'history' | 'pool'
@@ -52,7 +53,7 @@ export function MysterySheet(props: Props) {
       <header>{back}<div className="mystery-title"><small>雾中来信</small><h2>{page === 'home' ? '神秘岛' : page === 'draw' ? '漂流瓶' : page === 'history' ? '走过的路' : '事件池'}</h2></div><button className="icon-button" onClick={props.onClose} aria-label="关闭"><X /></button></header>
 
       {page === 'home' && <>
-        {props.current ? <div className="current-event"><span>当前漂流瓶事件</span><p>{props.current.text}</p><div><button className="primary" onClick={props.onComplete}><Check size={17} />完成</button><button className="secondary" onClick={props.onAbandon}>放弃</button></div></div> : <div className="bottle-call"><img src="/assets/bottle.png" alt="漂流瓶" /><div><p>潮水带来了一只漂流瓶</p><button className="primary" onClick={startDraw}><Waves size={17} />捞一个漂流瓶</button></div></div>}
+        {props.current ? <div className="current-event"><span>当前漂流瓶事件</span><p>{props.current.text}</p><div><button className="primary" onClick={props.onComplete}><Check size={17} />完成</button><button className="secondary" onClick={props.onAbandon}>放弃</button></div></div> : <div className="bottle-call"><img src={asset('bottle.png')} alt="漂流瓶" /><div><p>潮水带来了一只漂流瓶</p><button className="primary" onClick={startDraw}><Waves size={17} />捞一个漂流瓶</button></div></div>}
         <nav className="quiet-links"><button onClick={() => setPage('history')}><History size={17} />之前做过的事<span>{props.history.length}</span></button><button onClick={() => setPage('pool')}><Settings2 size={17} />管理漂流瓶事件池<span>{enabledCount} 启用</span></button></nav>
       </>}
 

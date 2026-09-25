@@ -1,5 +1,6 @@
 import { Archive, LocateFixed, Pencil, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { asset } from './assets'
 import { ArchiveDrawer } from './components/ArchiveDrawer'
 import { EditorDrawer } from './components/EditorDrawer'
 import { MapCanvas } from './components/MapCanvas'
@@ -76,7 +77,7 @@ export default function App() {
       onMoveBoat={actions.setBoatPosition}
     />
 
-    <header className="topbar"><div className="brand"><img className="brand-mark" src="/assets/undetermined-realm-mark.svg" alt="" /><div><b>未定之境</b><small>此刻的航海图</small></div></div><div className="top-actions"><button className="icon-button glass" onClick={actions.resetViewport} aria-label="复位地图"><LocateFixed /></button><button className="icon-button glass" onClick={() => setArchiveOpen(true)} aria-label="归档"><Archive /></button><button className={`mode-toggle ${editMode ? 'editing' : ''}`} onClick={() => { setEditMode((value) => !value); setSelectedId(null); setNewIslandId(null) }}><Pencil size={15} />{editMode ? '完成编辑' : '编辑地图'}</button></div></header>
+    <header className="topbar"><div className="brand"><img className="brand-mark" src={asset('undetermined-realm-mark.svg')} alt="" /><div><b>未定之境</b><small>此刻的航海图</small></div></div><div className="top-actions"><button className="icon-button glass" onClick={actions.resetViewport} aria-label="复位地图"><LocateFixed /></button><button className="icon-button glass" onClick={() => setArchiveOpen(true)} aria-label="归档"><Archive /></button><button className={`mode-toggle ${editMode ? 'editing' : ''}`} onClick={() => { setEditMode((value) => !value); setSelectedId(null); setNewIslandId(null) }}><Pencil size={15} />{editMode ? '完成编辑' : '编辑地图'}</button></div></header>
 
     {!state.onboarding.firstIslandCreated && <button className="first-island" onClick={addIsland}><span><Plus /></span><div><b>新建第一座岛</b><small>把此刻重要的事放到海上</small></div></button>}
     {state.onboarding.firstIslandCreated && editMode && <button className="floating-add" onClick={addIsland}><Plus />新建岛屿</button>}

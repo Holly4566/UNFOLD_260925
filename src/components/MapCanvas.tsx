@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { Anchor, Compass, Sparkles } from 'lucide-react'
 import { MYSTERY_POSITION, WORLD, clampViewport } from '../domain'
+import { asset } from '../assets'
 import type { Island, Point, Viewport } from '../types'
 
 const sizePixels = { small: 170, medium: 230, large: 300 }
@@ -102,14 +103,14 @@ export function MapCanvas(props: Props) {
   const activeIslands = props.islands.filter((island) => !island.archived && island.status === 'active')
 
   return (
-    <div ref={frameRef} className="map-frame" onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={endPointer} onPointerCancel={endPointer} onWheel={onWheel}>
-      <div className="world" style={{ width: WORLD.width, height: WORLD.height, transform: `translate(${props.viewport.x}px, ${props.viewport.y}px) scale(${props.viewport.scale})` }}>
+    <div ref={frameRef} className="map-frame" style={{ backgroundImage: `url(${asset('ocean.png')})` }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={endPointer} onPointerCancel={endPointer} onWheel={onWheel}>
+      <div className="world" style={{ width: WORLD.width, height: WORLD.height, transform: `translate(${props.viewport.x}px, ${props.viewport.y}px) scale(${props.viewport.scale})`, backgroundImage: `url(${asset('ocean.png')})` }}>
         <svg className="routes" viewBox={`0 0 ${WORLD.width} ${WORLD.height}`} aria-hidden="true">
           {activeIslands.map((island) => <path key={island.id} d={`M ${props.boatPosition.x} ${props.boatPosition.y} Q ${(props.boatPosition.x + island.position.x) / 2} ${(props.boatPosition.y + island.position.y) / 2 + 85} ${island.position.x} ${island.position.y}`} />)}
         </svg>
 
         <button data-map-object className="mystery-island" style={{ left: MYSTERY_POSITION.x, top: MYSTERY_POSITION.y }} onClick={props.onOpenMystery} aria-label="打开神秘岛">
-          <img src="/assets/mystery-island.png" alt="雾中的神秘岛" draggable={false} />
+          <img src={asset('mystery-island.png')} alt="雾中的神秘岛" draggable={false} />
           <span><Sparkles size={14} /> 神秘岛</span>
         </button>
 
@@ -124,7 +125,7 @@ export function MapCanvas(props: Props) {
             onClick={() => { if (!suppressObjectClick.current) props.onSelectIsland(island.id) }}
             onPointerDown={(event) => movablePointerDown(event, island.position, (position) => props.onMoveIsland(island.id, position))}
           >
-            <img src="/assets/island.png" alt="" draggable={false} />
+            <img src={asset('island.png')} alt="" draggable={false} />
             <span className="island-card">
               <b>{island.name}</b>
               <small>{statusLabel[island.status]} · {island.type === 'main' ? '主线' : '支线'}</small>
@@ -141,7 +142,7 @@ export function MapCanvas(props: Props) {
           onPointerDown={(event) => movablePointerDown(event, props.boatPosition, props.onMoveBoat)}
           aria-label={props.editMode ? '拖动我的船' : '我的船'}
         >
-          <img src="/assets/boat.png" alt="我的船" draggable={false} />
+          <img src={asset('boat.png')} alt="我的船" draggable={false} />
           <span><Anchor size={13} /> 我在这里</span>
         </button>
 
