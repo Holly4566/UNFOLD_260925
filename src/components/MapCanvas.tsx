@@ -114,7 +114,9 @@ export function MapCanvas(props: Props) {
           <span><Sparkles size={14} /> 神秘岛</span>
         </button>
 
-        {props.islands.filter((item) => !item.archived).map((island) => (
+        {props.islands.filter((item) => !item.archived).map((island) => {
+          const currentStages = island.stageNotes.filter((note) => !note.archivedAt)
+          return (
           <button
             data-map-object
             key={island.id}
@@ -127,10 +129,11 @@ export function MapCanvas(props: Props) {
             <span className="island-card">
               <b>{island.name}</b>
               <small>{statusLabel[island.status]} · {island.type === 'main' ? '主线' : '支线'}</small>
-              {island.currentEvent && <em>{island.currentEvent}</em>}
+              {currentStages.length > 0 && <span className="stage-preview">{currentStages.slice(0, 2).map((note) => <em key={note.id}>{note.content}</em>)}{currentStages.length > 2 && <i>另有 {currentStages.length - 2} 条</i>}</span>}
             </span>
           </button>
-        ))}
+          )
+        })}
 
         <button
           data-map-object

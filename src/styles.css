@@ -38,7 +38,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .island-card b, .island-card small, .island-card em { display: block; }
 .island-card b { font: 600 15px/1.3 'Songti SC', 'SimSun', serif; }
 .island-card small { margin-top: 6px; color: var(--muted); font-size: 11px; }
-.island-card em { margin-top: 5px; max-width: 120px; color: #4d5955; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; font-style: normal; }
+.stage-preview { display: block; margin-top: 5px; }
+.island-card em { position: relative; margin-top: 3px; max-width: 120px; padding-left: 8px; color: #4d5955; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; font-style: normal; }
+.island-card em::before { content: ''; position: absolute; top: .55em; left: 0; width: 3px; height: 3px; border-radius: 50%; background: #7f8b86; }
+.island-card i { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; font-style: normal; }
 
 .mystery-island { width: 295px; }
 .mystery-island img { filter: saturate(.66) opacity(.88); }
@@ -80,6 +83,26 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .sheet label, .sheet fieldset { display: block; margin: 0 0 16px; padding: 0; border: 0; color: #596360; font-size: 12px; }
 .sheet input, .sheet textarea { width: 100%; margin-top: 7px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: rgba(255,255,255,.55); resize: none; }
 .sheet textarea { min-height: 72px; }
+.stage-editor { margin-bottom: 17px; }
+.section-heading { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 9px; }
+.section-heading b, .section-heading small { display: block; }
+.section-heading b { font-size: 13px; }
+.section-heading small { margin-top: 3px; color: var(--muted); font-size: 10px; }
+.section-heading > span { padding: 3px 7px; border-radius: 20px; color: var(--muted); background: rgba(39,59,57,.07); font-size: 10px; }
+.stage-list { display: grid; gap: 8px; }
+.stage-row { padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.35); }
+.stage-row textarea { min-height: 48px; margin: 0; padding: 7px; border: 0; background: transparent; }
+.stage-row > div { display: flex; align-items: center; justify-content: flex-end; gap: 3px; }
+.stage-action { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 0 8px; border: 0; color: var(--muted); background: transparent; cursor: pointer; font-size: 10px; }
+.stage-add { display: grid; grid-template-columns: 1fr auto; gap: 7px; margin-top: 8px; }
+.stage-add input { margin: 0; min-width: 0; }
+.stage-add .secondary { padding: 0 10px; font-size: 11px; }
+.past-stages { margin: 0 0 17px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.past-stages summary { padding: 11px 2px; cursor: pointer; font-size: 12px; }
+.past-stages summary span { margin-left: 5px; color: var(--muted); }
+.past-stages article { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-top: 1px solid var(--line); }
+.past-stages article p { margin: 0; font-size: 12px; }
+.past-stages article time { color: var(--muted); font-size: 10px; }
 .sheet legend { margin-bottom: 7px; }
 .segmented { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px; padding: 3px; border-radius: 12px; background: rgba(39, 59, 57, .07); }
 .segmented button { min-height: 36px; border: 0; border-radius: 9px; background: transparent; cursor: pointer; font-size: 12px; }

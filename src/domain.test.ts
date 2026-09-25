@@ -7,7 +7,7 @@ describe('island domain', () => {
     expect(state.islands).toEqual([])
     expect(state.onboarding.firstIslandCreated).toBe(false)
     expect(createIsland({ x: 10, y: 20 })).toMatchObject({
-      name: '未命名岛屿', status: 'active', size: 'medium', position: { x: 10, y: 20 }, archived: false,
+      name: '未命名岛屿', status: 'active', size: 'medium', stageNotes: [], position: { x: 10, y: 20 }, archived: false,
     })
   })
 })
@@ -29,6 +29,6 @@ describe('mystery event draw', () => {
 describe('schema validation', () => {
   it('accepts current state and rejects malformed state', () => {
     expect(isValidState(createInitialState())).toBe(true)
-    expect(isValidState({ schemaVersion: 1, islands: [] })).toBe(false)
+    expect(isValidState({ schemaVersion: 2, islands: [] })).toBe(false)
   })
 })

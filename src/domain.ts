@@ -23,7 +23,7 @@ const starterEvents = [
 export function createInitialState(): AppState {
   const now = new Date().toISOString()
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     islands: [],
     boatPosition: { x: 860, y: 720 },
     viewport: createDefaultViewport(),
@@ -45,7 +45,7 @@ export function createIsland(position: Point): Island {
     id: crypto.randomUUID(),
     name: '未命名岛屿',
     type: 'main',
-    currentEvent: '',
+    stageNotes: [],
     status: 'active',
     size: 'medium',
     position,
@@ -81,7 +81,8 @@ export function clampViewport(
 export function isValidState(value: unknown): value is AppState {
   if (!value || typeof value !== 'object') return false
   const state = value as Partial<AppState>
-  return state.schemaVersion === 1 && Array.isArray(state.islands) &&
+  return state.schemaVersion === 2 && Array.isArray(state.islands) &&
+    state.islands.every((island) => Array.isArray(island.stageNotes)) &&
     Array.isArray(state.eventPool) && Array.isArray(state.completedEventHistory) &&
     !!state.boatPosition && !!state.viewport && !!state.onboarding
 }

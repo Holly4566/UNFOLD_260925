@@ -3,11 +3,18 @@ export type IslandType = 'main' | 'side'
 export type IslandStatus = 'active' | 'paused' | 'completed'
 export type IslandSize = 'small' | 'medium' | 'large'
 
+export interface StageNote {
+  id: string
+  content: string
+  createdAt: string
+  archivedAt: string | null
+}
+
 export interface Island {
   id: string
   name: string
   type: IslandType
-  currentEvent: string
+  stageNotes: StageNote[]
   status: IslandStatus
   size: IslandSize
   position: Point
@@ -41,7 +48,7 @@ export interface Viewport {
 }
 
 export interface AppState {
-  schemaVersion: 1
+  schemaVersion: 2
   islands: Island[]
   boatPosition: Point
   viewport: Viewport

@@ -18,7 +18,16 @@ describe('storage', () => {
 
   it('falls back safely for corrupt data', () => {
     const state = loadState({ getItem: () => '{bad json' })
-    expect(state.schemaVersion).toBe(1)
+    expect(state.schemaVersion).toBe(2)
     expect(state.islands).toEqual([])
+  })
+
+  it('migrates the former current event into a current stage note', () => {
+    const legacy = createInitialState() as unknown as Record<string, unknown>
+    legacy.schemaVersion = 1
+    legacy.islands = [{ ...createInitialState().islands, id: 'legacy', name: '求职', type: 'main', currentEvent: '正在面试', status: 'active', size: 'medium', position: { x: 1, y: 2 }, archived: false, createdAt: '2026-01-01', updatedAt: '2026-01-02' }]
+    const migrated = loadState({ getItem: () => JSON.stringify(legacy) })
+    expect(migrated.schemaVersion).toBe(2)
+    expect(migrated.islands[0].stageNotes[0].content).toBe('正在面试')
   })
 })
