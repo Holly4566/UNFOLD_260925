@@ -133,8 +133,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .segmented button.active { background: #fff; box-shadow: 0 2px 9px rgba(32, 50, 48, .1); }
 .sheet-actions { display: flex; gap: 8px; padding-top: 5px; }
 .editor-complete { width: 100%; min-height: 46px; margin-top: 3px; }
-.editor-icon-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 12px; }
-.editor-icon-action { width: 46px; height: 42px; min-height: 42px; padding: 0; border-radius: 12px; }
+.editor-icon-actions { display: flex; gap: 10px; margin-top: 12px; }
+.editor-icon-action { flex: 1; height: 46px; min-height: 46px; padding: 0; border-radius: 12px; }
 .editor-icon-action svg { width: 18px; }
 .secondary-actions { justify-content: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
 .secondary-actions button { min-height: 36px; font-size: 12px; }
