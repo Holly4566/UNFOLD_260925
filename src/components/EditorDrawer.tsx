@@ -8,11 +8,10 @@ interface Props {
   onClose: () => void
   onComplete: () => void
   isNew: boolean
-  onArchive: () => void
   onDelete: () => void
 }
 
-export function EditorDrawer({ island, onChange, onClose, onComplete, isNew, onArchive, onDelete }: Props) {
+export function EditorDrawer({ island, onChange, onClose, onComplete, isNew, onDelete }: Props) {
   const [stageDraft, setStageDraft] = useState('')
   const currentStages = island.stageNotes.filter((note) => !note.archivedAt)
   const pastStages = island.stageNotes.filter((note) => note.archivedAt)
@@ -45,7 +44,7 @@ export function EditorDrawer({ island, onChange, onClose, onComplete, isNew, onA
     <fieldset><legend>状态</legend><Segmented values={[['active', '探索中'], ['paused', '暂停'], ['completed', '完成']]} current={island.status} onChange={(status) => onChange({ status: status as IslandStatus })} /></fieldset>
     <fieldset><legend>大小</legend><Segmented values={[['small', '小'], ['medium', '中'], ['large', '大']]} current={island.size} onChange={(size) => onChange({ size: size as IslandSize })} /></fieldset>
     <button className="primary editor-complete" onClick={onComplete}><Check size={17} />{isNew ? '完成创建' : '保存并关闭'}</button>
-    <div className="sheet-actions secondary-actions"><button className="secondary" onClick={onArchive}><Archive size={17} />归档</button><button className="danger" onClick={onDelete}><Trash2 size={17} />删除</button></div>
+    <div className="editor-icon-actions"><button className="danger editor-icon-action" onClick={onDelete} aria-label="删除岛屿"><Trash2 /></button><button className="primary editor-icon-action" onClick={onComplete} aria-label={isNew ? '完成创建' : '保存并关闭'}><Check /></button></div>
   </aside></>
 }
 

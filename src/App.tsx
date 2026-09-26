@@ -1,7 +1,6 @@
-import { Archive, LocateFixed, Pencil, Plus } from 'lucide-react'
+import { LocateFixed, Pencil, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { asset } from './assets'
-import { ArchiveDrawer } from './components/ArchiveDrawer'
 import { EditorDrawer } from './components/EditorDrawer'
 import { MapCanvas } from './components/MapCanvas'
 import { MysterySheet } from './components/MysterySheet'
@@ -15,18 +14,15 @@ export default function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [newIslandId, setNewIslandId] = useState<string | null>(null)
   const [draftIsland, setDraftIsland] = useState<Island | null>(null)
-  const [archiveOpen, setArchiveOpen] = useState(false)
   const [mysteryOpen, setMysteryOpen] = useState(false)
   const [guideStep, setGuideStep] = useState<number | null>(null)
   const selected = state.islands.find((island) => island.id === selectedId && !island.archived) ?? (draftIsland?.id === selectedId ? draftIsland : undefined)
-  const archived = state.islands.filter((island) => island.archived)
 
   useEffect(() => {
     const handleBack = () => {
       setSelectedId(null)
       setNewIslandId(null)
       setDraftIsland(null)
-      setArchiveOpen(false)
     }
     window.addEventListener('popstate', handleBack)
     return () => window.removeEventListener('popstate', handleBack)
@@ -84,8 +80,8 @@ export default function App() {
   }
 
 
-  function removeIsland(id: string, permanent = false) {
-    if (confirm(permanent ? '永久删除这座归档岛屿？此操作无法撤销。' : '删除这座岛屿？此操作无法撤销。')) {
+  function removeIsland(id: string) {
+    if (confirm('删除这座岛屿？此操作无法撤销。')) {
       actions.deleteIsland(id)
       if (selectedId === id) setSelectedId(null)
       if (newIslandId === id) setNewIslandId(null)
@@ -108,13 +104,13 @@ export default function App() {
       onMoveBoat={actions.setBoatPosition}
     />
 
-    <header className="topbar"><div className="brand"><img className="brand-mark" src={asset('undetermined-realm-mark.svg')} alt="" /><div><b>未定之境</b></div></div><div className="top-actions"><button className="icon-button glass" onClick={actions.resetViewport} aria-label="复位地图"><LocateFixed /></button><button className="icon-button glass" onClick={() => { setArchiveOpen(true); if (!window.history.state?.archiveDrawer) window.history.pushState({ archiveDrawer: true }, '') }} aria-label="归档"><Archive /></button><button className={`mode-toggle icon-only ${editMode ? 'editing' : ''}`} aria-label={editMode ? '完成编辑' : '编辑地图'} title={editMode ? '完成编辑' : '编辑地图'} onClick={() => { setEditMode((value) => !value); setSelectedId(null); setNewIslandId(null) }}><Pencil size={15} /><span className="sr-only">{editMode ? '完成编辑' : '编辑地图'}</span></button></div></header>
+    <header className="topbar"><div className="brand"><img className="brand-mark" src={asset('undetermined-realm-mark.svg')} alt="" /><div><b>未定之境</b></div></div><div className="top-actions"><button className="icon-button glass" onClick={actions.resetViewport} aria-label="复位地图"><LocateFixed /></button><button className={`mode-toggle icon-only ${editMode ? 'editing' : ''}`} aria-label={editMode ? '完成编辑' : '编辑地图'} title={editMode ? '完成编辑' : '编辑地图'} onClick={() => { setEditMode((value) => !value); setSelectedId(null); setNewIslandId(null) }}><Pencil size={15} /><span className="sr-only">{editMode ? '完成编辑' : '编辑地图'}</span></button></div></header>
 
     {!state.onboarding.firstIslandCreated && <button className={`first-island ${guideStep === 4 ? 'first-island--guided' : ''}`} onClick={addIsland}><span><Plus /></span><div><b>为此刻，升起一座岛</b></div></button>}
     {state.onboarding.firstIslandCreated && editMode && <button className="floating-add" onClick={addIsland}><Plus />新建岛屿</button>}
 
     {guideStep !== null && <div className={`guide-overlay guide-overlay--step-${guideStep}`} aria-live="polite">
-      {guideStep === 1 && <div className="guide-top-labels"><span>复位视角</span><span>归档</span><span>编辑</span></div>}
+      {guideStep === 1 && <div className="guide-top-labels"><span>复位视角</span><span>编辑</span></div>}
       {guideStep === 1 && <button className="guide-next" onClick={() => setGuideStep(4)}>下一步</button>}
     </div>}
 
@@ -129,8 +125,7 @@ export default function App() {
       <button className="onboarding-start" onClick={() => { actions.completeIntro(); setGuideStep(1) }}>开始航行</button>
     </section></div>}
 
-    {selected && editMode && <EditorDrawer island={selected} isNew={newIslandId === selected.id} onChange={updateSelected} onComplete={completeEditor} onClose={closeEditor} onArchive={() => { if (newIslandId) closeEditor(); else { actions.updateIsland(selected.id, { archived: true }); closeEditor() } }} onDelete={() => { if (newIslandId) closeEditor(); else if (removeIsland(selected.id)) closeEditor() }} />}
-    {archiveOpen && <ArchiveDrawer islands={archived} onRestore={(id) => actions.updateIsland(id, { archived: false })} onDelete={(id) => removeIsland(id, true)} onClose={() => { setArchiveOpen(false); if (window.history.state?.archiveDrawer) window.history.back() }} />}
+    {selected && editMode && <EditorDrawer island={selected} isNew={newIslandId === selected.id} onChange={updateSelected} onComplete={completeEditor} onClose={closeEditor} onDelete={() => { if (newIslandId) closeEditor(); else if (removeIsland(selected.id)) closeEditor() }} />}
     {mysteryOpen && <MysterySheet current={state.currentMysteryEvent} history={state.completedEventHistory} pool={state.eventPool} onClose={() => setMysteryOpen(false)} onAccept={actions.acceptMysteryEvent} onComplete={actions.completeMysteryEvent} onAbandon={actions.abandonMysteryEvent} onAddPool={actions.addPoolEvent} onUpdatePool={actions.updatePoolEvent} onDeletePool={actions.deletePoolEvent} />}
   </main>
 }

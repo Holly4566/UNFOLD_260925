@@ -93,13 +93,11 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .guide-overlay { position: fixed; z-index: 50; inset: 0; background: rgba(5, 18, 21, .62); animation: guide-tip-in .25s ease-out; pointer-events: none; }
 .guide-tip { position: fixed; z-index: 55; padding: 8px 12px; border: 1px solid rgba(255,255,255,.26); border-radius: 999px; color: #f7f5ed; background: rgba(27, 53, 53, .9); box-shadow: 0 7px 24px rgba(12, 37, 39, .2); font-size: 12px; }
 @keyframes guide-tip-in { from { opacity: 0; transform: translateY(5px); } }
-.guide-top-labels { position: absolute; z-index: 55; top: 65px; right: 18px; display: grid; grid-template-columns: repeat(3, 40px); gap: 8px; color: #f8f5ed; font-size: 11px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.guide-top-labels { position: absolute; z-index: 55; top: 65px; right: 18px; display: grid; grid-template-columns: repeat(2, 40px); gap: 8px; color: #f8f5ed; font-size: 11px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,.4); }
 .guide-next { position: absolute; z-index: 55; top: 96px; right: 18px; min-height: 32px; padding: 0 13px; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; color: #f8f5ed; background: rgba(25, 51, 51, .9); cursor: pointer; font-size: 12px; pointer-events: auto; }
 .guide-overlay--step-4 { pointer-events: none; }
 
 .sheet { position: fixed; z-index: 40; right: 14px; bottom: 14px; width: min(390px, calc(100vw - 28px)); max-height: calc(100vh - 90px); overflow: auto; padding: 21px; border: 1px solid rgba(255,255,255,.52); border-radius: 24px; background: var(--paper); box-shadow: 0 24px 70px rgba(13, 35, 37, .28); backdrop-filter: blur(22px); animation: sheet-in .24s ease-out; }
-.archive-sheet { touch-action: pan-y; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-.drawer-backdrop { position: fixed; z-index: 39; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: default; }
 .editor-backdrop { position: fixed; z-index: 30; inset: 0; padding: 0; border: 0; background: transparent; cursor: default; }
 @keyframes sheet-in { from { opacity: 0; transform: translateY(18px); } }
 .sheet header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
@@ -135,6 +133,9 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .segmented button.active { background: #fff; box-shadow: 0 2px 9px rgba(32, 50, 48, .1); }
 .sheet-actions { display: flex; gap: 8px; padding-top: 5px; }
 .editor-complete { width: 100%; min-height: 46px; margin-top: 3px; }
+.editor-icon-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 12px; }
+.editor-icon-action { width: 46px; height: 42px; min-height: 42px; padding: 0; border-radius: 12px; }
+.editor-icon-action svg { width: 18px; }
 .secondary-actions { justify-content: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
 .secondary-actions button { min-height: 36px; font-size: 12px; }
 .primary, .secondary, .danger, .text-button { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; gap: 7px; padding: 0 15px; border-radius: 12px; cursor: pointer; }
@@ -194,14 +195,14 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   .mode-toggle { width: 40px; padding: 0; font-size: 0; }
   .sheet { left: 0; right: 0; bottom: 0; width: 100%; max-height: min(78vh, 680px); border-radius: 24px 24px 0 0; padding-bottom: max(21px, calc(env(safe-area-inset-bottom) + 14px)); }
   .mystery-sheet { left: 0; transform: none; }
-  .editor-sheet, .archive-sheet { z-index: 31; }
+  .editor-sheet { z-index: 31; }
   .floating-add { bottom: max(18px, calc(env(safe-area-inset-bottom) + 10px)); }
   .island-card { left: 55%; width: 132px; }
   .first-island { width: calc(100% - 38px); min-width: 0; max-width: 340px; }
   .onboarding-scrim { align-items: end; padding: 0; }
   .onboarding-card { width: 100%; padding: 25px 22px max(22px, calc(env(safe-area-inset-bottom) + 16px)); border-radius: 25px 25px 0 0; }
   .onboarding-card h1 { font-size: 22px; }
-  .guide-top-labels { top: 57px; right: 12px; grid-template-columns: repeat(3, 40px); gap: 5px; font-size: 10px; }
+  .guide-top-labels { top: 57px; right: 12px; grid-template-columns: repeat(2, 40px); gap: 5px; font-size: 10px; }
   .guide-next { top: 88px; right: 12px; }
 }
 
