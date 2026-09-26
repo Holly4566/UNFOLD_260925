@@ -19,7 +19,6 @@ export default function App() {
   const [mysteryOpen, setMysteryOpen] = useState(false)
   const [guideStep, setGuideStep] = useState<number | null>(null)
   const [backupMessage, setBackupMessage] = useState('')
-  const importInputRef = useRef<HTMLInputElement>(null)
   const selected = state.islands.find((island) => island.id === selectedId && !island.archived) ?? (draftIsland?.id === selectedId ? draftIsland : undefined)
   const archived = state.islands.filter((island) => island.archived)
 
@@ -88,20 +87,25 @@ export default function App() {
   async function backupData() {
     const filename = `undetermined-realm-backup-${new Date().toISOString().slice(0, 10)}.json`
     const file = new File([JSON.stringify(state, null, 2)], filename, { type: 'application/json' })
-    if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+    if (navigator.share && navigator.canShare?.({ files: [file] })) {
       try {
         await navigator.share({ title: '未定之境备份', files: [file] })
         setBackupMessage('已准备好备份')
       } catch (error) {
-        if ((error as DOMException).name !== 'AbortError') setBackupMessage('备份分享失败')
+        if ((error as DOMException).name === 'AbortError') return
+        downloadBackup(file)
       }
       window.setTimeout(() => setBackupMessage(''), 2200)
       return
     }
+    downloadBackup(file)
+  }
+
+  function downloadBackup(file: File) {
     const url = URL.createObjectURL(file)
     const link = document.createElement('a')
     link.href = url
-    link.download = filename
+    link.download = file.name
     document.body.appendChild(link)
     link.click()
     link.remove()
@@ -176,8 +180,7 @@ export default function App() {
     </section></div>}
 
     {selected && editMode && <EditorDrawer island={selected} isNew={newIslandId === selected.id} onChange={updateSelected} onComplete={completeEditor} onClose={closeEditor} onArchive={() => { if (newIslandId) closeEditor(); else { actions.updateIsland(selected.id, { archived: true }); closeEditor() } }} onDelete={() => { if (newIslandId) closeEditor(); else if (removeIsland(selected.id)) closeEditor() }} />}
-    {archiveOpen && <ArchiveDrawer islands={archived} onRestore={(id) => actions.updateIsland(id, { archived: false })} onDelete={(id) => removeIsland(id, true)} onClose={() => { setArchiveOpen(false); if (window.history.state?.archiveDrawer) window.history.back() }} onBackup={backupData} onImport={() => { setBackupMessage('请选择备份文件'); importInputRef.current?.click(); window.setTimeout(() => setBackupMessage(''), 2200) }} />}
-    <input ref={importInputRef} className="sr-only" type="file" accept="application/json,.json" onChange={(event) => { const file = event.target.files?.[0]; if (file) importData(file); event.target.value = '' }} />
+    {archiveOpen && <ArchiveDrawer islands={archived} onRestore={(id) => actions.updateIsland(id, { archived: false })} onDelete={(id) => removeIsland(id, true)} onClose={() => { setArchiveOpen(false); if (window.history.state?.archiveDrawer) window.history.back() }} onBackup={backupData} onImport={importData} />}
     {backupMessage && <div className="backup-toast" role="status">{backupMessage}</div>}
     {mysteryOpen && <MysterySheet current={state.currentMysteryEvent} history={state.completedEventHistory} pool={state.eventPool} onClose={() => setMysteryOpen(false)} onAccept={actions.acceptMysteryEvent} onComplete={actions.completeMysteryEvent} onAbandon={actions.abandonMysteryEvent} onAddPool={actions.addPoolEvent} onUpdatePool={actions.updatePoolEvent} onDeletePool={actions.deletePoolEvent} />}
   </main>
