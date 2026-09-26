@@ -98,9 +98,12 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .guide-overlay--step-4 { pointer-events: none; }
 
 .sheet { position: fixed; z-index: 40; right: 14px; bottom: 14px; width: min(390px, calc(100vw - 28px)); max-height: calc(100vh - 90px); overflow: auto; padding: 21px; border: 1px solid rgba(255,255,255,.52); border-radius: 24px; background: var(--paper); box-shadow: 0 24px 70px rgba(13, 35, 37, .28); backdrop-filter: blur(22px); animation: sheet-in .24s ease-out; }
+.drawer-backdrop { position: fixed; z-index: 39; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: default; }
 .editor-backdrop { position: fixed; z-index: 30; inset: 0; padding: 0; border: 0; background: transparent; cursor: default; }
 @keyframes sheet-in { from { opacity: 0; transform: translateY(18px); } }
 .sheet header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+.drawer-header-actions { display: flex; align-items: center; gap: 2px; }
+.backup-button { min-height: 36px; padding: 0 8px; color: var(--muted); font-size: 12px; }
 .sheet header > div { flex: 1; }
 .sheet header small { color: var(--muted); font-size: 11px; letter-spacing: .16em; }
 .sheet h2 { margin: 3px 0 0; font: 600 22px/1.35 'Songti SC', 'SimSun', serif; }

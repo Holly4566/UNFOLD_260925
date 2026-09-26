@@ -28,6 +28,7 @@ export function useAppState() {
     },
     addIslandData: (island: Island) => update((s) => ({ ...s, islands: [...s.islands, island], onboarding: { ...s.onboarding, firstIslandCreated: true } })),
     completeIntro: () => update((s) => ({ ...s, onboarding: { ...s.onboarding, introCompleted: true } })),
+    replaceState: (nextState: AppState) => setState(nextState),
     updateIsland: (id: string, patch: Partial<Island>) => update((s) => ({
       ...s,
       islands: s.islands.map((island) => island.id === id
