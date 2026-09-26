@@ -18,6 +18,7 @@ export default function App() {
   const [archiveOpen, setArchiveOpen] = useState(false)
   const [mysteryOpen, setMysteryOpen] = useState(false)
   const [guideStep, setGuideStep] = useState<number | null>(null)
+  const [backupMessage, setBackupMessage] = useState('')
   const importInputRef = useRef<HTMLInputElement>(null)
   const selected = state.islands.find((island) => island.id === selectedId && !island.archived) ?? (draftIsland?.id === selectedId ? draftIsland : undefined)
   const archived = state.islands.filter((island) => island.archived)
@@ -82,8 +83,12 @@ export default function App() {
     const link = document.createElement('a')
     link.href = url
     link.download = `undetermined-realm-backup-${new Date().toISOString().slice(0, 10)}.json`
+    document.body.appendChild(link)
     link.click()
+    link.remove()
     URL.revokeObjectURL(url)
+    setBackupMessage('已导出备份')
+    window.setTimeout(() => setBackupMessage(''), 2200)
   }
 
   function importData(file: File) {
@@ -95,8 +100,11 @@ export default function App() {
         if (!window.confirm('导入后会覆盖当前地图数据，确定继续吗？')) return
         actions.replaceState({ ...parsed, onboarding: { firstIslandCreated: parsed.onboarding.firstIslandCreated, introCompleted: parsed.onboarding.introCompleted ?? false } })
         setArchiveOpen(false)
+        setBackupMessage('已导入备份')
+        window.setTimeout(() => setBackupMessage(''), 2200)
       } catch {
-        window.alert('备份文件无效，当前数据没有改变。')
+        setBackupMessage('备份文件无效，数据未改变')
+        window.setTimeout(() => setBackupMessage(''), 2600)
       }
     }
     reader.readAsText(file)
@@ -150,6 +158,7 @@ export default function App() {
     {selected && editMode && <EditorDrawer island={selected} isNew={newIslandId === selected.id} onChange={updateSelected} onComplete={completeEditor} onClose={closeEditor} onArchive={() => { if (newIslandId) closeEditor(); else { actions.updateIsland(selected.id, { archived: true }); closeEditor() } }} onDelete={() => { if (newIslandId) closeEditor(); else if (removeIsland(selected.id)) closeEditor() }} />}
     {archiveOpen && <ArchiveDrawer islands={archived} onRestore={(id) => actions.updateIsland(id, { archived: false })} onDelete={(id) => removeIsland(id, true)} onClose={() => { setArchiveOpen(false); if (window.history.state?.archiveDrawer) window.history.back() }} onBackup={backupData} onImport={() => importInputRef.current?.click()} />}
     <input ref={importInputRef} className="sr-only" type="file" accept="application/json,.json" onChange={(event) => { const file = event.target.files?.[0]; if (file) importData(file); event.target.value = '' }} />
+    {backupMessage && <div className="backup-toast" role="status">{backupMessage}</div>}
     {mysteryOpen && <MysterySheet current={state.currentMysteryEvent} history={state.completedEventHistory} pool={state.eventPool} onClose={() => setMysteryOpen(false)} onAccept={actions.acceptMysteryEvent} onComplete={actions.completeMysteryEvent} onAbandon={actions.abandonMysteryEvent} onAddPool={actions.addPoolEvent} onUpdatePool={actions.updatePoolEvent} onDeletePool={actions.deletePoolEvent} />}
   </main>
 }
