@@ -102,10 +102,6 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .editor-backdrop { position: fixed; z-index: 30; inset: 0; padding: 0; border: 0; background: transparent; cursor: default; }
 @keyframes sheet-in { from { opacity: 0; transform: translateY(18px); } }
 .sheet header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
-.drawer-header-actions { display: flex; align-items: center; gap: 2px; }
-.sheet header .drawer-header-actions { flex: none; }
-.backup-button { min-height: 36px; padding: 0 8px; color: var(--muted); font-size: 12px; }
-.backup-toast { position: fixed; z-index: 70; left: 50%; bottom: max(28px, calc(env(safe-area-inset-bottom) + 20px)); transform: translateX(-50%); padding: 9px 14px; border-radius: 999px; color: #f8f5ed; background: rgba(29, 54, 53, .9); box-shadow: 0 8px 26px rgba(10, 32, 35, .25); font-size: 12px; }
 .sheet header > div { flex: 1; }
 .sheet header small { color: var(--muted); font-size: 11px; letter-spacing: .16em; }
 .sheet h2 { margin: 3px 0 0; font: 600 22px/1.35 'Songti SC', 'SimSun', serif; }
