@@ -34,6 +34,14 @@ export default function App() {
     return () => window.removeEventListener('popstate', handleBack)
   }, [])
 
+  useEffect(() => {
+    ;['ocean.webp', 'island.webp', 'mystery-island.webp', 'boat.webp', 'bottle.webp'].forEach((name) => {
+      const image = new Image()
+      image.decoding = 'async'
+      image.src = asset(name)
+    })
+  }, [])
+
   function openEditor(id: string, isNew: boolean) {
     setEditMode(true)
     setSelectedId(id)
